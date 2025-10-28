@@ -6,6 +6,12 @@
 
 Control-system regression utilities for Model Context Protocol services. It evaluates PID gains against a second-order plant (using [python-control](https://python-control.readthedocs.io/)), computes gust-rejection metrics, and blends optional diffSPH/Foam-Agent metrics supplied by the caller.
 
+## Why you might want this
+
+- **Regression-test control laws** – keep a lightweight plant model handy so agents can sanity-check PID gains.
+- **Fuse structural data** – optional diffSPH/Foam-Agent metrics feed into the report, helping cross-discipline reviews.
+- **Share reproducible experiments** – request/response payloads double as documentation for how a tuning session was evaluated.
+
 ## Features
 - Deterministic PID step response analysis (overshoot, settling time, ISE).
 - Optional gust detector, adaptive CPG, and MoE router scoring primitives.
@@ -36,6 +42,8 @@ uv pip install --system -e .[dev]
 uv run ruff check .
 uv run pytest
 ```
+
+The test suite shows both the minimal “PID-only” call and a richer request that merges surrogate data, giving new contributors concrete payloads to copy.
 
 ## License
 MIT — see [LICENSE](LICENSE).

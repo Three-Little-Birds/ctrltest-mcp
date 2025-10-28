@@ -15,6 +15,7 @@ from ctrltest_mcp.models import (
 
 
 def test_evaluate_control_returns_metrics() -> None:
+    """Smoke-test the default PID analysis so learners can see the basics."""
     request = ControlAnalysisInput(
         plant=ControlPlant(
             natural_frequency_hz=5.0,
@@ -39,6 +40,7 @@ def test_evaluate_control_returns_metrics() -> None:
 
 
 def test_evaluate_control_with_extra_metrics() -> None:
+    """Show how diffSPH/Foam-Agent outputs can be injected into the report."""
     request = ControlAnalysisInput(
         plant=ControlPlant(
             natural_frequency_hz=4.0,
