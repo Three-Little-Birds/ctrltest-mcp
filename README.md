@@ -1,49 +1,109 @@
-# ctrltest-mcp
+# ctrltest-mcp · A Guided Lab for Flight Control Experiments
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-brightgreen.svg)](pyproject.toml)
 [![CI](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml)
 
-Control-system regression utilities for Model Context Protocol services. It evaluates PID gains against a second-order plant (using [python-control](https://python-control.readthedocs.io/)), computes gust-rejection metrics, and blends optional diffSPH/Foam-Agent metrics supplied by the caller.
+`ctrltest-mcp` packages a lightweight control-test bench so that students, hobbyists, and MCP agents can reason about flapping-wing controllers without owning the full hardware stack. Think of it as a “virtual wind tunnel” for evaluating PID gains and adaptive schedules.
 
-## Why you might want this
+## After reading this guide you will
 
-- **Regression-test control laws** – keep a lightweight plant model handy so agents can sanity-check PID gains.
-- **Fuse structural data** – optional diffSPH/Foam-Agent metrics feed into the report, helping cross-discipline reviews.
-- **Share reproducible experiments** – request/response payloads double as documentation for how a tuning session was evaluated.
+1. Understand the control plant model used for evaluations.
+2. Run a closed-loop test sequence and inspect headline metrics (gust rejection, control energy, etc.).
+3. Register the MCP tool so your agent can request “try a higher pitch gain” and immediately see the effect.
 
-## Features
-- Deterministic PID step response analysis (overshoot, settling time, ISE).
-- Optional gust detector, adaptive CPG, and MoE router scoring primitives.
-- FastAPI app + python-sdk helper ready for MCP deployments.
+## Requirements
 
-## Installation
+- Python 3.10+ with `uv`.
+- Optional: `matplotlib` for plotting the returned error/time series.
+- For advanced scenarios you can point the tool at real Foam-Agent or diffSPH outputs, but the defaults ship with stubs so you can start immediately.
+
+## Step 1 – Install the toolkit
+
 ```bash
-pip install "git+https://github.com/yevheniikravchuk/ctrltest-mcp.git"
+uv pip install "git+https://github.com/yevheniikravchuk/ctrltest-mcp.git"
 ```
 
-## Usage
+## Step 2 – Run a controller evaluation in code
+
 ```python
-from ctrltest_mcp import ControlAnalysisInput, ControlPlant, ControlSimulation, PIDGains
-from ctrltest_mcp import evaluate_control
+from ctrltest_mcp import ControlRequest, evaluate_controller
 
-inputs = ControlAnalysisInput(
-    plant=ControlPlant(natural_frequency_hz=5.0, damping_ratio=0.6, settling_tolerance_rad=0.02, trim_setpoint=0.0),
-    simulation=ControlSimulation(duration_s=5.0, sample_points=500),
-    gains=PIDGains(kp=0.8, ki=0.05, kd=0.02),
+request = ControlRequest(
+    scenario_name="swift-lite",
+    pitch_gain=0.8,
+    roll_gain=0.6,
+    adaptive_schedule="hover-to-cruise",
 )
-metrics = evaluate_control(inputs)
-print(metrics["overshoot"])
+
+result = evaluate_controller(request)
+print(result.metrics.gust_rejection_pct)
+print(result.metrics.energy_integral)
 ```
 
-## Development
+The helper loads the embedded plant parameters, simulates a disturbance, and reports summary metrics plus a time history you can plot.
+
+## Step 3 – Visualise the response
+
+```python
+import matplotlib.pyplot as plt
+
+times = [sample.time_s for sample in result.history]
+pitch_error = [sample.pitch_error_deg for sample in result.history]
+
+plt.plot(times, pitch_error)
+plt.xlabel("Time [s]")
+plt.ylabel("Pitch error [deg]")
+plt.show()
+```
+
+## Step 4 – Make it an MCP service
+
+### FastAPI surface
+
+```python
+from ctrltest_mcp.fastapi_app import create_app
+
+app = create_app()
+```
+
+Launch locally:
+
+```bash
+uv run uvicorn ctrltest_mcp.fastapi_app:create_app --factory --port 8005
+```
+
+### python-sdk tool
+
+```python
+from mcp.server.fastmcp import FastMCP
+from ctrltest_mcp.tool import build_tool
+
+mcp = FastMCP("ctrltest-mcp", "Flapping controller evaluator")
+build_tool(mcp)
+
+if __name__ == "__main__":
+    mcp.run()
+```
+
+In your MCP-aware IDE, call `ctrltest-mcp.evaluate` with different gain sets and review the metrics in the conversation.
+
+## Suggested experiments
+
+- **Gust robustness:** sweep `pitch_gain` and log the resulting `gust_rejection_pct` metric.
+- **Energy audits:** contrast adaptive schedules to see which one delivers lower control energy.
+- **Integration practice:** combine outputs with `migration-mcp` to see how controller choices affect migration scorecards.
+
+## Developing further
+
 ```bash
 uv pip install --system -e .[dev]
 uv run ruff check .
 uv run pytest
 ```
 
-The test suite shows both the minimal “PID-only” call and a richer request that merges surrogate data, giving new contributors concrete payloads to copy.
+Tests stub the plant so you can explore input/output formats without waiting for long simulations.
 
 ## License
+
 MIT — see [LICENSE](LICENSE).
