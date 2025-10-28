@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.10+-brightgreen.svg)](pyproject.toml)
 [![CI](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml)
 
-Reusable control-system regression utilities for Model Context Protocol services. It evaluates PID gains against a second-order plant, computes gust-rejection metrics, and blends optional diffSPH/Foam-Agent metrics supplied by the caller.
+Control-system regression utilities for Model Context Protocol services. It evaluates PID gains against a second-order plant (using [python-control](https://python-control.readthedocs.io/)), computes gust-rejection metrics, and blends optional diffSPH/Foam-Agent metrics supplied by the caller.
 
 ## Features
 - Deterministic PID step response analysis (overshoot, settling time, ISE).
