@@ -55,6 +55,10 @@ class ControlAnalysisInput(BaseModel):
     moe_router: MoERouterConfig = Field(default_factory=MoERouterConfig)
     diffsph_metrics: dict[str, Any] | None = None
     foam_metrics: dict[str, Any] | None = None
+    prefer_high_fidelity: bool = Field(
+        default=True,
+        description="Attempt to use PteraControls when available before falling back to the analytic surrogate.",
+    )
 
 
 class ControlAnalysisOutput(BaseModel):
@@ -73,3 +77,4 @@ class ControlAnalysisOutput(BaseModel):
     moe_energy_j: float
     multi_modal_score: float | None = None
     extra_metrics: dict[str, Any] | None = None
+    metadata: dict[str, Any] | None = None

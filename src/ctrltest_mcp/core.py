@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import math
 from typing import Any
 
@@ -9,9 +10,20 @@ import numpy as np
 from control import feedback, forced_response, tf
 
 from .models import ControlAnalysisInput, ControlAnalysisOutput
+from .pteracontrols_adapter import is_available, run_high_fidelity
+
+LOGGER = logging.getLogger(__name__)
 
 
 def evaluate_control(inputs: ControlAnalysisInput) -> ControlAnalysisOutput:
+    if inputs.prefer_high_fidelity and is_available():
+        try:
+            high_fidelity = run_high_fidelity(inputs)
+            if high_fidelity is not None:
+                return high_fidelity
+        except Exception as exc:  # pragma: no cover - fallback safety
+            LOGGER.warning("PteraControls evaluation failed, using surrogate results: %s", exc)
+
     plant = inputs.plant
     gains = inputs.gains
     simulation = inputs.simulation
@@ -91,6 +103,7 @@ def evaluate_control(inputs: ControlAnalysisInput) -> ControlAnalysisOutput:
         moe_energy_j=round(moe_energy, 6),
         multi_modal_score=multi_modal_score,
         extra_metrics=extra_metrics,
+        metadata={"solver": "analytic"},
     )
 
 

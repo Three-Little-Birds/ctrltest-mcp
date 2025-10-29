@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.10+-brightgreen.svg)](pyproject.toml)
 [![CI](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml)
 
-`ctrltest-mcp` packages a lightweight control-test bench so that students, hobbyists, and MCP agents can reason about flapping-wing controllers without owning the full hardware stack. Think of it as a “virtual wind tunnel” for evaluating PID gains and adaptive schedules.
+`ctrltest-mcp` packages a lightweight control-test bench so that students, hobbyists, and MCP agents can reason about flapping-wing controllers without owning the full hardware stack. When [PteraControls](https://github.com/camUrban/PteraControls) ships a Python interface the MCP automatically upgrades to its high-fidelity routines; until then the built-in analytic surrogate keeps the learning loop quick.
 
 ## After reading this guide you will
 
@@ -17,11 +17,14 @@
 - Python 3.10+ with `uv`.
 - Optional: `matplotlib` for plotting the returned error/time series.
 - For advanced scenarios you can point the tool at real Foam-Agent or diffSPH outputs, but the defaults ship with stubs so you can start immediately.
+- Optional: a Python build of PteraControls for high-fidelity evaluation (auto-detected when installed).
 
 ## Step 1 – Install the toolkit
 
 ```bash
 uv pip install "git+https://github.com/yevheniikravchuk/ctrltest-mcp.git"
+# optional: enable PteraControls high-fidelity mode when the Python package is available
+# uv pip install "git+https://github.com/camUrban/PteraControls.git"
 ```
 
 ## Step 2 – Run a controller evaluation in code
