@@ -46,6 +46,8 @@ print(result.metrics.energy_integral)
 
 The helper loads the embedded plant parameters, simulates a disturbance, and reports summary metrics plus a time history you can plot.
 
+Just like the aerodynamic tool, the response contains a `metadata` payload. Expect `{"solver": "analytic"}` today; once PteraControls publishes Python bindings the adapter automatically upgrades to something like `{"solver": "pteracontrols", "solver_version": "...", "fidelity": "uvlm"}` so downstream scorecards know which engine produced the evaluation.
+
 ## Step 3 – Visualise the response
 
 ```python
