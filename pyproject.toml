@@ -21,8 +21,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yevheniikravchuk/ctrltest-mcp"
-Repository = "https://github.com/yevheniikravchuk/ctrltest-mcp"
+Homepage = "https://github.com/Three-Little-Birds/ctrltest-mcp"
+Repository = "https://github.com/Three-Little-Birds/ctrltest-mcp"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

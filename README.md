@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-brightgreen.svg)](pyproject.toml)
-[![CI](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/yevheniikravchuk/ctrltest-mcp/actions/workflows/ci.yml)
+[![CI](https://github.com/Three-Little-Birds/ctrltest-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Three-Little-Birds/ctrltest-mcp/actions/workflows/ci.yml)
 
 `ctrltest-mcp` packages a lightweight control-test bench so that students, hobbyists, and MCP agents can reason about flapping-wing controllers without owning the full hardware stack. When [PteraControls](https://github.com/camUrban/PteraControls) ships a Python interface the MCP automatically upgrades to its high-fidelity routines; until then the built-in analytic surrogate keeps the learning loop quick.
 
@@ -22,7 +22,7 @@
 ## Step 1 – Install the toolkit
 
 ```bash
-uv pip install "git+https://github.com/yevheniikravchuk/ctrltest-mcp.git"
+uv pip install "git+https://github.com/Three-Little-Birds/ctrltest-mcp.git"
 # optional: enable PteraControls high-fidelity mode when the Python package is available
 # uv pip install "git+https://github.com/camUrban/PteraControls.git"
 ```
