@@ -73,6 +73,14 @@ if __name__ == "__main__":
     mcp.run()
 ```
 
+### ToolHive smoke test
+
+Run the integration script from the Orthodrone repo root:
+
+```bash
+uvx --with 'mcp==1.20.0' python scripts/integration/run_ctrltest.py
+```
+
 ## Agent playbook
 
 - **Gust rejection** - feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives to quantify adaptive CPG improvements.
