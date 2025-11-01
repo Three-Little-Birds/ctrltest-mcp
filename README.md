@@ -1,4 +1,4 @@
-# ctrltest-mcp · Flight-control regression lab for MCP agents
+# ctrltest-mcp - Flight-control regression lab for MCP agents
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
@@ -24,8 +24,8 @@
 
 | Persona | Immediate value | Longer-term payoff |
 |---------|-----------------|--------------------|
-| **New users** | Plug in default plant parameters and observe overshoot/gust KPIs in one call. | Ready-to-run examples mirror the README first, aligning with modern “quick win” documentation advice.【turn0search0】 |
-| **Experienced teams** | Fuse metrics from diffSPH and Foam-Agent archives to score adaptive controllers. | Designed for the Continuous Evidence Engine (CEE) – metrics drop straight into nightly scorecards.
+| **New users** | Plug in default plant parameters and observe overshoot/gust KPIs in one call. | Ready-to-run examples mirror the README first, aligning with modern "quick win" documentation advice.[turn0search0] |
+| **Experienced teams** | Fuse metrics from diffSPH and Foam-Agent archives to score adaptive controllers. | Designed for the Continuous Evidence Engine (CEE) - metrics drop straight into nightly scorecards.
 
 ## Quickstart
 
@@ -66,9 +66,9 @@ if __name__ == "__main__":
 
 ## Agent playbook
 
-- **Gust rejection** – feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives to quantify adaptive CPG improvements.
-- **Controller comparison** – log analytics for multiple PID gains, export JSONL evidence, and visualise in Grafana.
-- **Policy evaluation** – integrate with RL or evolutionary algorithms; metrics are structured for automated scoring.
+- **Gust rejection** - feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives to quantify adaptive CPG improvements.
+- **Controller comparison** - log analytics for multiple PID gains, export JSONL evidence, and visualise in Grafana.
+- **Policy evaluation** - integrate with RL or evolutionary algorithms; metrics are structured for automated scoring.
 
 ## Stretch ideas
 
@@ -78,9 +78,9 @@ if __name__ == "__main__":
 
 ## Accessibility & upkeep
 
-- Hero badges include alt text and stay under five to maintain scanability.【turn0search0】
+- Hero badges include alt text and stay under five to maintain scanability.[turn0search0]
 - Run `uv run pytest` (tests mock diffSPH/Foam-Agent inputs).
-- Keep metric schema changes documented—downstream dashboards rely on them.
+- Keep metric schema changes documented-downstream dashboards rely on them.
 
 ## Contributing
 
@@ -88,4 +88,4 @@ if __name__ == "__main__":
 2. `uv run ruff check .` and `uv run pytest`
 3. Share sample metrics in PRs so reviewers can sanity-check improvements quickly.
 
-MIT license — see [LICENSE](LICENSE).
+MIT license - see [LICENSE](LICENSE).
