@@ -7,6 +7,7 @@ from unittest import mock
 from ctrltest_mcp.core import evaluate_control
 from ctrltest_mcp.models import (
     AdaptiveCPGConfig,
+    ControlAnalysisOutput,
     ControlAnalysisInput,
     ControlPlant,
     ControlSimulation,

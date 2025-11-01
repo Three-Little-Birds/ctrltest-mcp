@@ -45,6 +45,15 @@ print(response.metrics)
 
 ## Run as a service
 
+### CLI (STDIO transport)
+
+```bash
+uvx ctrltest-mcp  # runs the MCP over stdio
+# or just python -m ctrltest_mcp
+```
+
+Use `python -m ctrltest_mcp --describe` to print basic metadata without starting the server.
+
 ### FastAPI (REST)
 
 ```bash
