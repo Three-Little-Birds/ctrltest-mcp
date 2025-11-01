@@ -24,7 +24,7 @@
 
 | Persona | Immediate value | Longer-term payoff |
 |---------|-----------------|--------------------|
-| **New users** | Plug in default plant parameters and observe overshoot/gust KPIs in one call. | Ready-to-run examples mirror the README first, aligning with modern "quick win" documentation advice.[turn0search0] |
+| **New users** | Plug in default plant parameters and observe overshoot/gust KPIs in one call. | Ready-to-run examples mirror the README first, aligning with modern "quick win" documentation advice. |
 | **Experienced teams** | Fuse metrics from diffSPH and Foam-Agent archives to score adaptive controllers. | Designed for the Continuous Evidence Engine (CEE) - metrics drop straight into nightly scorecards.
 
 ## Quickstart
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
 ## Accessibility & upkeep
 
-- Hero badges include alt text and stay under five to maintain scanability.[turn0search0]
+- Hero badges include alt text and stay under five to maintain scanability.
 - Run `uv run pytest` (tests mock diffSPH/Foam-Agent inputs).
 - Keep metric schema changes documented-downstream dashboards rely on them.
 
