@@ -11,7 +11,7 @@
 
 ## Table of contents
 
-1. [Why agents love it](#why-agents-love-it)
+1. [What it provides](#what-it-provides)
 2. [Quickstart](#quickstart)
 3. [Run as a service](#run-as-a-service)
 4. [Agent playbook](#agent-playbook)
@@ -19,12 +19,13 @@
 6. [Accessibility & upkeep](#accessibility--upkeep)
 7. [Contributing](#contributing)
 
-## Why agents love it
+## What it provides
 
-| Persona | Immediate value | Longer-term payoff |
-|---------|-----------------|--------------------|
-| **New users** | Plug in default plant parameters and observe overshoot/gust KPIs in one call. | Ready-to-run examples mirror the README first, aligning with modern "quick win" documentation advice. |
-| **Experienced teams** | Fuse metrics from diffSPH and Foam-Agent archives to score adaptive controllers. | Designed for the Continuous Evidence Engine (CEE) - metrics drop straight into nightly scorecards.
+| Scenario | Value |
+|----------|-------|
+| Analytic PID benchmarking | Run closed-form plant models and produce overshoot/settling/energy metrics without manual scripting. |
+| High-fidelity scoring | Ingest logged data from [Foam-Agent](https://github.com/csml-rpi/Foam-Agent) or diffSPH runs and fuse it into controller evaluations. |
+| MCP integration | Expose the scoring API via STDIO/HTTP so ToolHive or other clients can automate gain tuning and generate Continuous Evidence Engine (CEE) scorecards. |
 
 ## Quickstart
 
