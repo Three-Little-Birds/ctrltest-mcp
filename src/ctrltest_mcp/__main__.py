@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 
 from mcp.server.fastmcp import FastMCP
@@ -18,7 +19,7 @@ def main(argv: list[str] | None = None) -> int:
     """Run the ctrltest MCP server or emit metadata."""
     parser = argparse.ArgumentParser(
         prog=SERVICE_NAME,
-        description="Run the ctrltest MCP server (STDIO transport).",
+        description="Run the ctrltest MCP server.",
     )
     parser.add_argument(
         "--describe",
@@ -27,9 +28,25 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--transport",
-        choices=["stdio"],
+        choices=["stdio", "sse", "streamable-http"],
         default="stdio",
-        help="Transport to use (only stdio is currently supported).",
+        help="Transport to use (stdio, sse, or streamable-http).",
+    )
+    parser.add_argument(
+        "--host",
+        default=None,
+        help="Host interface for SSE/streamable HTTP transports (default 0.0.0.0).",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=None,
+        help="Port for SSE/streamable HTTP transports (default 8000).",
+    )
+    parser.add_argument(
+        "--path",
+        default=None,
+        help="Mount/path for SSE or streamable HTTP transports (default /mcp).",
     )
     args = parser.parse_args(argv)
 
@@ -45,11 +62,37 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(metadata, indent=2))
         return 0
 
-    if args.transport != "stdio":
-        parser.error("only the stdio transport is supported at the moment")
+    transport = args.transport
 
-    app.run()
-    return 0
+    host_env = os.environ.get("FASTMCP_HOST")
+    port_env = os.environ.get("FASTMCP_PORT")
+    path_env = os.environ.get("FASTMCP_STREAMABLE_HTTP_PATH")
+
+    host = args.host or host_env or "0.0.0.0"
+    port = args.port or (int(port_env) if port_env else 8000)
+    mount_path = args.path or path_env or "/mcp"
+
+    if transport == "stdio":
+        return app.run()
+
+    app.settings.host = host
+    app.settings.port = port
+
+    if transport == "streamable-http":
+        app.settings.streamable_http_path = mount_path
+        print(
+            f"ctrltest-mcp starting (transport=streamable-http) on {app.settings.host}:{app.settings.port}{mount_path}",
+            file=sys.stderr,
+            flush=True,
+        )
+        return app.run(transport="streamable-http")
+
+    print(
+        f"ctrltest-mcp starting (transport=sse) on {app.settings.host}:{app.settings.port}{mount_path}",
+        file=sys.stderr,
+        flush=True,
+    )
+    return app.run(transport="sse", mount_path=mount_path)
 
 
 if __name__ == "__main__":

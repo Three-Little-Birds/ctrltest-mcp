@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
 ### ToolHive smoke test
 
-Run the integration script from the Orthodrone repo root:
+Run the integration script from your workspace root:
 
 ```bash
 uvx --with 'mcp==1.20.0' python scripts/integration/run_ctrltest.py
