@@ -58,22 +58,26 @@ Typical outputs (analytic only):
 
 ```json
 {
-  "overshoot": 0.018,
-  "ise": 0.0046,
-  "settling_time": 0.92,
+  "overshoot": -0.034024863556091134,
+  "ise": 0.008612387509182674,
+  "settling_time": 3.0,
   "gust_detection_latency_ms": 0.8,
   "gust_detection_bandwidth_hz": 1200.0,
-  "gust_rejection_pct": 0.42,
+  "gust_rejection_pct": 0.396,
   "cpg_energy_baseline_j": 12.0,
-  "cpg_energy_consumed_j": 7.44,
-  "cpg_energy_reduction_pct": 0.38,
+  "cpg_energy_consumed_j": 7.8,
+  "cpg_energy_reduction_pct": 0.35,
   "lyapunov_margin": 0.12,
   "moe_switch_penalty": 0.135,
   "moe_latency_ms": 12.72,
-  "moe_energy_j": 3.72,
+  "moe_energy_j": 3.9,
+  "multi_modal_score": null,
+  "extra_metrics": null,
   "metadata": {"solver": "analytic"}
 }
 ```
+
+> The analytic plant example above clips `settling_time` at the requested simulation duration (`duration_s=3.0`). Increase the horizon if you need the loop to settle fully before computing that metric.
 
 ## Run as a service
 
