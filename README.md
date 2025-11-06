@@ -36,11 +36,22 @@ uv pip install "git+https://github.com/Three-Little-Birds/ctrltest-mcp.git"
 Run a PID evaluation:
 
 ```python
-from ctrltest_mcp import PIDRequest, run_pid_analysis
+from ctrltest_mcp import (
+    ControlAnalysisInput,
+    ControlPlant,
+    ControlSimulation,
+    PIDGains,
+    evaluate_control,
+)
 
-request = PIDRequest(setpoint_rad=0.2)
-response = run_pid_analysis(request)
-print(response.metrics)
+request = ControlAnalysisInput(
+    plant=ControlPlant(natural_frequency_hz=3.2, damping_ratio=0.35),
+    gains=PIDGains(kp=2.0, ki=0.5, kd=0.12),
+    simulation=ControlSimulation(duration_s=3.0, sample_points=400),
+    setpoint=0.2,
+)
+response = evaluate_control(request)
+print(response.model_dump())
 ```
 
 Typical outputs (analytic only):
