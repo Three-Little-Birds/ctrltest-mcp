@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%2B-3776AB.svg" alt="Python 3.10 or newer"></a>
+  <a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.11%2B-3776AB.svg" alt="Python 3.11 or newer"></a>
   <a href="https://github.com/Three-Little-Birds/ctrltest-mcp/actions/workflows/ci.yml"><img src="https://github.com/Three-Little-Birds/ctrltest-mcp/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <img src="https://img.shields.io/badge/MCP-tooling-blueviolet.svg" alt="MCP tooling badge">
 </p>
@@ -41,6 +41,18 @@ from ctrltest_mcp import PIDRequest, run_pid_analysis
 request = PIDRequest(setpoint_rad=0.2)
 response = run_pid_analysis(request)
 print(response.metrics)
+```
+
+Typical metric payload:
+
+```json
+{
+  "setpoint_rad": 0.2,
+  "overshoot_pct": 3.8,
+  "settling_time_s": 0.92,
+  "energy_j": 1.34,
+  "gust_margin_pct": 12.5
+}
 ```
 
 ## Run as a service
@@ -83,13 +95,13 @@ uvx --with 'mcp==1.20.0' python scripts/integration/run_ctrltest.py
 
 ## Agent playbook
 
-- **Gust rejection** - feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives to quantify adaptive CPG improvements.
+- **Gust rejection** - feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives (paths returned by those services) to quantify adaptive CPG improvements.
 - **Controller comparison** - log analytics for multiple PID gains, export JSONL evidence, and visualise in Grafana.
 - **Policy evaluation** - integrate with RL or evolutionary algorithms; metrics are structured for automated scoring.
 
 ## Stretch ideas
 
-1. Extend the adapter for PteraControls once upstream bindings land.
+1. Extend the adapter for PteraControls (planned once upstream Python bindings are published).
 2. Drive the MCP from `scripts/fitness` to populate nightly scorecards.
 3. Combine with `migration-mcp` to explore route-specific disturbance budgets.
 
