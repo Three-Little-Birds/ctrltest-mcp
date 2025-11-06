@@ -43,15 +43,24 @@ response = run_pid_analysis(request)
 print(response.metrics)
 ```
 
-Typical metric payload:
+Typical outputs (analytic only):
 
 ```json
 {
-  "setpoint_rad": 0.2,
-  "overshoot_pct": 3.8,
-  "settling_time_s": 0.92,
-  "energy_j": 1.34,
-  "gust_margin_pct": 12.5
+  "overshoot": 0.018,
+  "ise": 0.0046,
+  "settling_time": 0.92,
+  "gust_detection_latency_ms": 0.8,
+  "gust_detection_bandwidth_hz": 1200.0,
+  "gust_rejection_pct": 0.42,
+  "cpg_energy_baseline_j": 12.0,
+  "cpg_energy_consumed_j": 7.44,
+  "cpg_energy_reduction_pct": 0.38,
+  "lyapunov_margin": 0.12,
+  "moe_switch_penalty": 0.135,
+  "moe_latency_ms": 12.72,
+  "moe_energy_j": 3.72,
+  "metadata": {"solver": "analytic"}
 }
 ```
 
@@ -93,6 +102,8 @@ Run the integration script from your workspace root:
 uvx --with 'mcp==1.20.0' python scripts/integration/run_ctrltest.py
 ```
 
+The smoke test runs the analytic path by default. To exercise high-fidelity scoring, stage Foam-Agent archives under `logs/foam_agent/` and diffSPH gradients under `logs/diffsph/` before launching the script.
+
 ## Agent playbook
 
 - **Gust rejection** - feed archived diffSPH gradients (`diffsph_metrics`) and Foam-Agent archives (paths returned by those services) to quantify adaptive CPG improvements.
@@ -108,8 +119,41 @@ uvx --with 'mcp==1.20.0' python scripts/integration/run_ctrltest.py
 ## Accessibility & upkeep
 
 - Hero badges include alt text and stay under five to maintain scanability.
-- Run `uv run pytest` (tests mock diffSPH/Foam-Agent inputs).
-- Keep metric schema changes documented-downstream dashboards rely on them.
+- Run `uv run pytest` (tests mock diffSPH/Foam-Agent inputs and assert deterministic analytic results).
+- Keep metric schema changes documented—downstream dashboards rely on them.
+
+### Metric schema at a glance
+
+| Field | Units | Notes |
+|-------|-------|-------|
+| `overshoot` | radians | peak response minus setpoint |
+| `ise` | rad²·s | integral squared error |
+| `settling_time` | seconds | first time error stays within tolerance |
+| `gust_detection_latency_ms` | milliseconds | detector latency |
+| `gust_detection_bandwidth_hz` | hertz | detector bandwidth |
+| `gust_rejection_pct` | 0–1 | fraction of disturbance rejected |
+| `cpg_energy_baseline_j` | joules | energy pre-adaptation |
+| `cpg_energy_consumed_j` | joules | energy post-adaptation |
+| `cpg_energy_reduction_pct` | 0–1 | energy reduction ratio |
+| `lyapunov_margin` | unitless | stability margin |
+| `moe_switch_penalty` | unitless | cost weight × switches |
+| `moe_latency_ms` | milliseconds | latency budget after switching |
+| `moe_energy_j` | joules | mix-of-experts energy draw |
+| `multi_modal_score` | unitless | only when both diffSPH & Foam metrics are present |
+| `extra_metrics` | varies | raw diffSPH/Foam metrics merged in |
+
+Example of fused high-fidelity metrics:
+
+```json
+{
+  "extra_metrics": {
+    "force_gradient_norm": 0.87,
+    "lift_drag_ratio": 18.4
+  },
+  "multi_modal_score": 0.047,
+  "metadata": {"solver": "analytic"}
+}
+```
 
 ## Contributing
 
