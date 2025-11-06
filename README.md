@@ -25,7 +25,7 @@
 |----------|-------|
 | Analytic PID benchmarking | Run closed-form plant models and produce overshoot/settling/energy metrics without manual scripting. |
 | High-fidelity scoring | Ingest logged data from [Foam-Agent](https://github.com/csml-rpi/Foam-Agent) or diffSPH runs and fuse it into controller evaluations. |
-| MCP integration | Expose the scoring API via STDIO/HTTP so ToolHive or other clients can automate gain tuning and generate Continuous Evidence Engine (CEE) scorecards. |
+| MCP integration | Expose the scoring API via STDIO/HTTP so ToolHive or other clients can automate gain tuning and generate continuous performance scorecards. |
 
 ## Quickstart
 
