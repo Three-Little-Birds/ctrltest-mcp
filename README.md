@@ -7,6 +7,10 @@
   <img src="https://img.shields.io/badge/MCP-tooling-blueviolet.svg" alt="MCP tooling badge">
 </p>
 
+<a href="https://glama.ai/mcp/servers/@yevheniikravchuk/ctrltest-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@yevheniikravchuk/ctrltest-mcp/badge" alt="CtrlTest Server MCP server" />
+</a>
+
 > **TL;DR**: Evaluate PID and bio-inspired controllers against analytic or diffSPH/Foam-Agent data through MCP, logging overshoot, energy, and gust metrics automatically.
 
 ## Table of contents
